@@ -1,6 +1,6 @@
 module github.com/KM911/fish
 
-go 1.18
+go 1.21
 
 require (
 	github.com/RoaringBitmap/roaring/v2 v2.2.2

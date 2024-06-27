@@ -165,12 +165,3 @@ func ListDirDeep(_src string) (srcs []string, _folders []string) {
 	}
 	return
 }
-
-func NotExistAndMkdir(src string) {
-	if !IsExist(src) {
-		err := os.MkdirAll(src, os.ModePerm)
-		if err != nil {
-			panic(err)
-		}
-	}
-}

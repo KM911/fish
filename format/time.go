@@ -16,8 +16,7 @@ func TimerStart() *timer {
 }
 
 func (_t *timer) End() {
-	end := time.Now()
-	InfoMessage("Past ", fmt.Sprint(end.Sub(_t.start)))
+	InfoMessage("Past ", fmt.Sprint(time.Since(_t.start)))
 }
 
 func UnixTime() int64 {
@@ -25,5 +24,6 @@ func UnixTime() int64 {
 }
 
 func Timestamp() string {
+	time.AfterFunc(1*time.Second, func() {})
 	return time.Now().Format("2006-01-02 15:04:05")
 }

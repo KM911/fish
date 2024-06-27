@@ -6,15 +6,49 @@ import (
 	"crypto/rand"
 )
 
+var ()
+
+type PrivateKey struct {
+	key []byte
+}
+
+func NewPrivateKey() *PrivateKey {
+	return &PrivateKey{key: GetPrivateKey()}
+}
+
+func (p *PrivateKey) DecryptByte(ciphertext []byte) ([]byte, error) {
+	return PrivateDecryptByte(p.key, ciphertext)
+}
+
+func (p *PrivateKey) EncryptByte(plaintext []byte) ([]byte, error) {
+	return PrivateEncryByte(p.key, plaintext)
+}
+
+func (p *PrivateKey) DecryptString(ciphertext string) (string, error) {
+	plaintext, err := p.DecryptByte([]byte(ciphertext))
+	if err != nil {
+		return "", err
+	}
+	return string(plaintext), nil
+}
+
+func (p *PrivateKey) EncryptString(plaintext string) (string, error) {
+	ciphertext, err := p.EncryptByte([]byte(plaintext))
+	if err != nil {
+		return "", err
+	}
+	return string(ciphertext), nil
+}
+
 // 生成密钥
-func generateKey() []byte {
+func GetPrivateKey() []byte {
 	key := make([]byte, 32)
 	rand.Read(key)
 	return key
 }
 
 // 加密
-func encrypt(key []byte, plaintext []byte) ([]byte, error) {
+func PrivateEncryByte(key []byte, plaintext []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -39,7 +73,7 @@ func encrypt(key []byte, plaintext []byte) ([]byte, error) {
 }
 
 // 解密
-func decrypt(key []byte, ciphertext []byte) ([]byte, error) {
+func PrivateDecryptByte(key []byte, ciphertext []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err

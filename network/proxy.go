@@ -11,8 +11,8 @@ import (
 )
 
 // will create a https proxy
-func HttpsProxy(_port int) {
-	tcpAddress, err := net.ResolveTCPAddr("tcp", "0.0.0.0:"+strconv.Itoa(_port))
+func HttpsProxy(port int) {
+	tcpAddress, err := net.ResolveTCPAddr("tcp", "0.0.0.0:"+strconv.Itoa(port))
 	format.Must(err)
 	tcpListner, err := net.ListenTCP("tcp", tcpAddress)
 	format.Must(err)
@@ -23,12 +23,12 @@ func HttpsProxy(_port int) {
 	}
 }
 
-func HandleTCPConn(_conn *net.TCPConn) {
+func HandleTCPConn(conn *net.TCPConn) {
 	buffer := make([]byte, 4096)
-	_conn.Read(buffer)
+	conn.Read(buffer)
 	if string(buffer[:7]) == http.MethodConnect {
 		// https
-		_conn.Write([]byte("HTTP/1.1 200 Connection Established\r\n\r\n"))
+		conn.Write([]byte("HTTP/1.1 200 Connection Established\r\n\r\n"))
 		index := 10
 		for {
 			if buffer[index] == 32 {
@@ -37,17 +37,15 @@ func HandleTCPConn(_conn *net.TCPConn) {
 			index++
 		}
 		host := string(buffer[8:index])
-		// conn remote
-		// fmt.Println("host is ", host)
 		remote, err := net.Dial("tcp", host)
 		if err != nil {
 			log.Println(err)
-			_conn.Close()
+			conn.Close()
 			return
 		}
 		// transfer
-		go transfer(_conn, remote)
-		go transfer(remote, _conn)
+		go transfer(conn, remote)
+		go transfer(remote, conn)
 	} else {
 		// deny http
 		return

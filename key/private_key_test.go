@@ -11,11 +11,11 @@ func TestKKy(t *testing.T) {
 	data := []byte("This is the data to be . right alkdfjaslkdfj")
 
 	// 生成密钥
-	key := generateKey()
+	key := GetPrivateKey()
 	fmt.Println(string(key), cap(key), len(key))
 
 	// 加密数据
-	cipherText, err := encrypt(key, data)
+	cipherText, err := PrivateEncryByte(key, data)
 	if err != nil {
 		fmt.Println("Error encrypting data:", err)
 		return
@@ -24,7 +24,7 @@ func TestKKy(t *testing.T) {
 	fmt.Println("Encrypted data:", hex.EncodeToString(cipherText))
 
 	// 解密数据
-	plainText, err := decrypt(key, cipherText)
+	plainText, err := PrivateDecryptByte(key, cipherText)
 	if err != nil {
 		fmt.Println("Error decrypting data:", err)
 		return
