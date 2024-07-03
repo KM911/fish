@@ -6,6 +6,12 @@ import (
 	"testing"
 )
 
+// String --> Byte []byte(string)
+// Byte --> String ByteToString([]byte)
+// BenchmarkStringToBytesStandard-12    	1000000000	         0.2497 ns/op	       0 B/op	       0 allocs/op
+// BenchmarkBytesToStringStandard-12    	 6222952	       190.5 ns/op	    1792 B/op	       1 allocs/op
+// BenchmarkStringToBytes-12            	1000000000	         0.4987 ns/op	       0 B/op	       0 allocs/op
+// BenchmarkBytesToString-12            	1000000000	         0.4830 ns/op	       0 B/op	       0 allocs/op
 const size = 310
 
 func TestStringToBytes(t *testing.T) {

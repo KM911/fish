@@ -9,8 +9,8 @@ import (
 /*
 返回文件夹下的 所有文件 和 一级文件夹
 */
-func Dir(path string) ([]string, []string) {
-	files, err := os.ReadDir(path)
+func Dir(src string) ([]string, []string) {
+	files, err := os.ReadDir(src)
 	if err != nil {
 		panic(err)
 	}
@@ -30,9 +30,9 @@ func Dir(path string) ([]string, []string) {
 /*
 判断是否为空目录
 */
-func IsEmptyDir(path string) bool {
-	filelist, folderlist := Dir(path)
-	if len(filelist) == 0 && len(folderlist) == 0 {
+func IsEmptyDir(src string) bool {
+	files, folders := Dir(src)
+	if len(files) == 0 && len(folders) == 0 {
 		return true
 	}
 	return false
@@ -116,29 +116,29 @@ func DeepDirSorted(path string) ([]string, []string) {
 /*
 判定文件是否为目录
 */
-func IsDir(file_ string) bool {
-	fileInfo, err := os.Stat(file_)
+func IsDir(src string) bool {
+	fileInfo, err := os.Stat(src)
 	if err != nil {
 		panic(err)
 	}
 	return fileInfo.IsDir()
 }
 
-func IsFile(file_ string) bool {
-	fileInfo, err := os.Stat(file_)
+func IsFile(src string) bool {
+	fileInfo, err := os.Stat(src)
 	if err != nil {
 		panic(err)
 	}
 	return !fileInfo.IsDir()
 }
 
-func IsExist(file_ string) bool {
-	_, err := os.Stat(file_)
+func IsExist(src string) bool {
+	_, err := os.Stat(src)
 	return err == nil
 }
 
-func ListDir(_src string) (srcNames []string, _dirNames []string) {
-	files, err := os.ReadDir(_src)
+func ListDir(src string) (srcNames []string, _dirNames []string) {
+	files, err := os.ReadDir(src)
 	if err != nil {
 		panic(err)
 	}
@@ -154,14 +154,14 @@ func ListDir(_src string) (srcNames []string, _dirNames []string) {
 
 // 可以写一个read deep dir 其实还是比较简单的不是面
 
-func ListDirDeep(_src string) (srcs []string, _folders []string) {
-	files, folders := ListDir(_src)
+func ListDirDeep(src string) (srcs []string, folders []string) {
+	files, folders := ListDir(src)
 	srcs = append(srcs, files...)
-	_folders = append(_folders, folders...)
+	folders = append(folders, folders...)
 	for _, folder := range folders {
 		srcs_, _folders_ := ListDirDeep(folder)
 		srcs = append(srcs, srcs_...)
-		_folders = append(_folders, _folders_...)
+		folders = append(folders, _folders_...)
 	}
 	return
 }

@@ -2,66 +2,66 @@ package format
 
 import (
 	"fmt"
+	"io"
 	"log"
-
-	"github.com/gookit/color"
+	"os"
+	"path/filepath"
+	"runtime"
+	"runtime/debug"
+	"strings"
+	"time"
 )
 
-var ()
+var (
+	StringBuilder = strings.Builder{}
+	output        = os.Stdout
+)
 
-func Error(_msg string) {
-	ErrorMessage("Error", _msg)
-}
-func LogErorr(_msg string) {
-	log.Println(color.BgRed.Render("[Error]"), ": ", color.Error.Render(_msg))
-}
-
-func ErrorMessage(error string, _msg string) {
-	fmt.Println(color.BgRed.Render(error), ": ", color.Error.Render(_msg))
+// time file:line Error title
+// Error content
+func init() {
 }
 
-func Warning(_msg string) {
-	WarningMessage("Warning", _msg)
-}
-func LogWarning(_msg string) {
-	log.Println(color.BgYellow.Render("[Warning]"), ": ", color.Warn.Render(_msg))
+func SetOutputTemp() {
+	SetOutputFile(filepath.Join(os.TempDir(), "format_"+time.Now().GoString()))
 }
 
-func WarningMessage(warning string, _msg string) {
-	fmt.Println(color.BgYellow.Render(warning), ": ", color.Warn.Render(_msg))
+func SetOutputFile(src string) {
+	logFile, err := os.OpenFile(src, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
+	if err != nil {
+		panic(err)
+	}
+	output = logFile
 }
 
-func Info(_msg string) {
-	InfoMessage("Info", _msg)
+func SetOutput(w io.Writer) {
+	log.SetOutput(w)
 }
 
-func LogInfo(_msg string) {
-	log.Println(color.BgBlue.Render("[Info]"), ": ", color.Info.Render(_msg))
+func Recover() {
+	if err := recover(); err != nil {
+		log.Println(err)
+		log.Println(string(debug.Stack()))
+	}
 }
 
-func InfoMessage(info string, _msg string) {
-	fmt.Println(color.BgBlue.Render(info), ": ", color.Info.Render(_msg))
-}
+/*
+time file:line Error title
+Error content
+*/
+func LogFormat(title, content string) {
+	_, file, line, _ := runtime.Caller(1)
 
-func Note(_msg string) {
-	NoteMessage("Note", _msg)
-}
-func LogNote(_msg string) {
-	log.Println(color.BgHiBlue.Render("[Note]"), ": ", color.Note.Render(_msg))
-}
+	// StringBuilder.WriteString(time.Now().Format("2006-01-02 15:04:05"))
+	// StringBuilder.WriteByte(' ')
+	// StringBuilder.WriteString(file)
+	// StringBuilder.WriteByte(':')
+	// StringBuilder.WriteString(strconv.Itoa(line))
+	// StringBuilder.WriteString(title)
+	// StringBuilder.WriteByte('\n')
+	// StringBuilder.WriteString(content)
 
-func NoteMessage(_note string, _msg string) {
-	fmt.Println(color.BgHiBlue.Render(_note), ": ", color.Note.Render(_msg))
-}
+	// output.Write([]byte(fmt.Sprintf("%s %s:%d %s\n%s\n", time.Now().Format("2006-01-02 15:04:05"), file, line, title, content)))
 
-func Success(_msg string) {
-	SuccessMessage("Success", _msg)
-}
-
-func LogSuccess(_msg string) {
-	log.Println(color.BgGreen.Render("[Success]"), ": ", color.Success.Render(_msg))
-}
-
-func SuccessMessage(success string, _msg string) {
-	fmt.Println(color.BgGreen.Render(success), ": ", color.Success.Render(_msg))
+	fmt.Fprintf(output, "%s %s:%d %s\n%s\n", title, file, line, time.Now().Format("2006-01-02 15:04:05"), content)
 }

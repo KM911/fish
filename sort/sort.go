@@ -29,27 +29,3 @@ func InsertSort(arr []int) {
 		}
 	}
 }
-
-// QuickSort sorts an array using the quicksort algorithm.
-func QuickSort(arr []int) {
-	if len(arr) < 2 {
-		return
-	}
-	pivot := arr[0]
-	left, right := 1, len(arr)-1
-	for left < right {
-		for left < right && arr[left] < pivot {
-			left++
-		}
-		for left < right && arr[right] >= pivot {
-			right--
-		}
-		arr[left], arr[right] = arr[right], arr[left]
-	}
-	if arr[left] >= pivot {
-		left--
-	}
-	arr[0], arr[left] = arr[left], arr[0]
-	QuickSort(arr[:left])
-	QuickSort(arr[left+1:])
-}

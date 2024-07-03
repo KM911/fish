@@ -19,7 +19,7 @@ var (
 // 我们的文件换行都应该使用就是 LF
 // 函数命名采用 驼峰命名法 首字母大写
 // 变量命名采用 蛇形命名法 首字母小写
-// 为了避免和系统包冲突 我们的变量名结尾都加上下划线 例如 file_ path_ type_ 等等 尽量不影响阅读
+// 为了避免和系统包冲突 我们的变量名结尾都加上下划线 例如 src path_ type_ 等等 尽量不影响阅读
 
 // AbsPath
 // 返回文件的绝对路径
@@ -27,8 +27,8 @@ var (
 // e.g.
 // a.txt -> /home/xxx/a.txt
 // Makefile -> D:/SOFT/CODE/Makefile
-func AbsPath(file_ string) string {
-	abs, _ := filepath.Abs(file_)
+func AbsPath(src string) string {
+	abs, _ := filepath.Abs(src)
 	return filepath.ToSlash(abs)
 }
 

@@ -33,7 +33,6 @@ func CallCost() *funcCaller {
 }
 
 func (t *funcCaller) Log() {
-	t.duration = time.Now().Sub(t.start)
 	t.duration = time.Since(t.start)
 }
 
@@ -51,18 +50,18 @@ func PrintTimerLogs() {
 			lengthList[2] = len(fmt.Sprint(v.duration))
 		}
 		if len(fmt.Sprintf("%.4f",
-			float64(v.duration.Nanoseconds()*1000/time.Now().Sub(MainStart).Nanoseconds())/1000)) > lengthList[3] {
+			float64(v.duration.Nanoseconds()*1000/time.Since(MainStart).Nanoseconds())/1000)) > lengthList[3] {
 			lengthList[3] = len(fmt.Sprintf("%.4f",
-				float64(v.duration.Nanoseconds()*1000/time.Now().Sub(MainStart).Nanoseconds())/1000))
+				float64(v.duration.Nanoseconds()*1000/time.Since(MainStart).Nanoseconds())/1000))
 		}
 		if len(v.Addr) > lengthList[4] {
 			lengthList[4] = len(v.Addr)
 		}
 	}
-	DarwCallerTable(titleList, lengthList)
+	DrawCallerTable(titleList, lengthList)
 }
 
-func DarwCallerTable(titleList []string, lengthList []int) {
+func DrawCallerTable(titleList []string, lengthList []int) {
 	DrawTop(lengthList)
 	DrawTopContent(titleList, lengthList)
 	DrawMiddle(lengthList)
@@ -71,7 +70,7 @@ func DarwCallerTable(titleList []string, lengthList []int) {
 			MiddleAlign(fmt.Sprint(v.name), lengthList[0]),
 			MiddleAlign(fmt.Sprint(v.caller), lengthList[1]),
 			MiddleAlign(fmt.Sprint(v.duration), lengthList[2]),
-			MiddleAlign(fmt.Sprintf("%.4f", float64(v.duration.Nanoseconds()*1000/time.Now().Sub(MainStart).Nanoseconds())/1000), lengthList[3]),
+			MiddleAlign(fmt.Sprintf("%.4f", float64(v.duration.Nanoseconds()*1000/time.Since(MainStart).Nanoseconds())/1000), lengthList[3]),
 			MiddleAlign(fmt.Sprint(v.Addr), lengthList[4])))
 	}
 	DrawBottom(lengthList)

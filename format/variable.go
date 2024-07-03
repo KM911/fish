@@ -112,7 +112,7 @@ func DrawBottom(lengthList []int) {
 }
 
 func DrawLine(__type__ int, lengthList []int) {
-	notion := []string{}
+	var notion []string
 	switch __type__ {
 	case 0:
 		notion = TopNotationList

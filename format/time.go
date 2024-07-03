@@ -1,7 +1,6 @@
 package format
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -16,7 +15,8 @@ func TimerStart() *timer {
 }
 
 func (_t *timer) End() {
-	InfoMessage("Past ", fmt.Sprint(time.Since(_t.start)))
+	// InfoMessage("Past ", fmt.Sprint(time.Since(_t.start)))
+	Blue("Past " + time.Since(_t.start).String())
 }
 
 func UnixTime() int64 {

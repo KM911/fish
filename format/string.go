@@ -1,13 +1,8 @@
 package format
 
 import (
-	"strings"
 	"unicode"
 	"unsafe"
-)
-
-var (
-	StringBuilder = strings.Builder{}
 )
 
 func MaxLength(s []string) int {
@@ -20,9 +15,11 @@ func MaxLength(s []string) int {
 	return currentMax
 }
 
-// StringLen return the width of string
-// abcd 4
-// 你好 4
+/*
+StringLen return the width of string, support unicode
+abcd --> 4
+你好 --> 4
+*/
 func StringLen(s string) int {
 	length := 0
 	for _, c := range s {
@@ -37,6 +34,7 @@ func StringLen(s string) int {
 	return length
 }
 
+// reference : https://github.com/josestg/zerocast
 // StringToBytes converts a string to a byte slice without memory allocation.
 // NOTE: The returned byte slice MUST NOT be modified since it shares the same backing array
 // with the given string.
