@@ -9,7 +9,7 @@ import (
 )
 
 func TestLog(t *testing.T) {
-	LogFormat("title", "content")
+	FileLogFormat("title", "content")
 }
 
 var (

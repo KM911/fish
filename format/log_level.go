@@ -10,8 +10,6 @@ const (
 	// panic -- fatal
 )
 
-// info warning fatal
-
 var (
 	Info    = infoRender
 	Warning = warningRender
@@ -19,9 +17,17 @@ var (
 	Success = successRender
 )
 
-func nothing() {}
+func nothing(str string) {}
 
-func Release() {
+// close all info
+func Silent() {
+	Info = nothing
+	Warning = nothing
+	Fatal = nothing
+	Success = nothing
+}
+
+func Common() {
 	Info = info
 	Warning = warning
 	Fatal = fatal
@@ -29,39 +35,54 @@ func Release() {
 }
 
 func info(v string) {
-	LogFormat("Debug", v)
+	FileLogFormat("Debug", v)
+}
+
+func InfoMsg(title, content string) {
+	TerminalLogFormat(color.BgHiBlue.Render(title), content)
+}
+
+func NoteMsg(title, content string) {
+	TerminalLogFormat(color.Note.Render(title), content)
+}
+
+func WarningMsg(title, content string) {
+	TerminalLogFormat(color.BgYellow.Render(title), content)
+}
+
+func FatalMsg(title, content string) {
+	TerminalLogFormat(color.BgRed.Render(title), content)
+}
+
+func SuccessMsg(title, content string) {
+	TerminalLogFormat(color.BgGreen.Render(title), content)
 }
 
 func infoRender(v string) {
-	// LogFormat(color.BgHiBlue.Render("Debug"), color.Note.Render(v))
-	LogFormat(color.BgHiBlue.Render("Debug"), v)
+	FileLogFormat(color.BgHiBlue.Render("Info"), v)
 
 }
 
 func success(v string) {
-	LogFormat("Success", v)
+	FileLogFormat("Success", v)
 }
 func successRender(v string) {
-	// LogFormat(color.BgGreen.Render("Success"), color.Success.Render(v))
-	LogFormat(color.BgGreen.Render("Success"), v)
+	FileLogFormat(color.BgGreen.Render("Success"), v)
 }
 
 func warning(v string) {
-	LogFormat("Warning", v)
+	FileLogFormat("Warning", v)
 }
 
 func warningRender(v string) {
-	// LogFormat(color.BgYellow.Render("Warning"), color.Warn.Render(v))
-	LogFormat(color.BgYellow.Render("Warning"), v)
-
+	FileLogFormat(color.BgYellow.Render("Warning"), v)
 }
 
 func fatal(v string) {
-	LogFormat("Panic", v)
+	FileLogFormat("Panic", v)
 }
 
 func fatalRender(v string) {
-	// LogFormat(color.BgRed.Render("Error"), color.Error.Render(v))
-	LogFormat(color.BgRed.Render("Error"), v)
+	FileLogFormat(color.BgRed.Render("Error"), v)
 
 }

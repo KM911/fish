@@ -23,3 +23,19 @@ func Profile(mode uint) interface{ Stop() } {
 		return profile.Start(profile.CPUProfile, profile.ProfilePath("."))
 	}
 }
+
+func CPU() interface{ Stop() } {
+	return profile.Start(profile.CPUProfile, profile.ProfilePath("."))
+}
+
+func Mem() interface{ Stop() } {
+	return profile.Start(profile.MemProfile, profile.ProfilePath("."))
+}
+
+func Block() interface{ Stop() } {
+	return profile.Start(profile.BlockProfile, profile.ProfilePath("."))
+}
+
+func Mutex() interface{ Stop() } {
+	return profile.Start(profile.MutexProfile, profile.ProfilePath("."))
+}

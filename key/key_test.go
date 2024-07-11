@@ -7,6 +7,8 @@ import (
 
 func TestKey(t *testing.T) {
 	ak, sk := GenerateKeyPair()
+	fmt.Println(len(ak), len(sk))
+	// 459 1675
 	message := "I love you"
 	encrypted := Encrypt(message, ak)
 	fmt.Println(encrypted)
